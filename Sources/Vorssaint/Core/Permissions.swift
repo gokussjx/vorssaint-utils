@@ -423,9 +423,11 @@ final class Permissions: ObservableObject {
     enum AutomationTarget: String, CaseIterable {
         case finder = "com.apple.finder"
         case terminal = "com.apple.Terminal"
+        case mail = "com.apple.mail"
+        case notes = "com.apple.Notes"
     }
 
-    enum AutomationStatus {
+    enum AutomationStatus: Equatable {
         case granted, denied, undetermined, notDeterminable
     }
 

@@ -98,6 +98,7 @@ enum SelfUninstall {
         AutoQuitService.shared.suspend()
         FinderCutPaste.shared.suspend()
         FinderRenameService.shared.suspend()
+        ItemLinkService.shared.suspend()
         KeyboardDebounceService.shared.suspend()
         MouseClickDebounceService.shared.suspend()
         // Also takes the Super key mapping back out, synchronously, so the

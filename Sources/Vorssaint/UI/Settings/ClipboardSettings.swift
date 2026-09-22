@@ -10,6 +10,7 @@ struct ClipboardSettings: View {
     @ObservedObject private var pastePlain = PastePlainService.shared
     @ObservedObject private var permissions = Permissions.shared
     @AppStorage(DefaultsKey.pastePlainEnabled) private var pastePlainEnabled = false
+    @AppStorage(DefaultsKey.itemLinksEnabled) private var itemLinksEnabled = false
     @AppStorage(DefaultsKey.clipboardHistoryEnabled) private var enabled = false
     @AppStorage(DefaultsKey.clipboardHistoryLimit) private var limit = 50
     @AppStorage(DefaultsKey.clipboardHistorySkipSensitive) private var skipSensitive = true
@@ -29,6 +30,10 @@ struct ClipboardSettings: View {
 
     private var text: ClipboardFeatureStrings {
         FeatureStrings.clipboard(l10n.language)
+    }
+
+    private var itemLinkText: ItemLinkFeatureStrings {
+        FeatureStrings.itemLinks(l10n.language)
     }
 
     var body: some View {
@@ -101,6 +106,36 @@ struct ClipboardSettings: View {
                         PermissionRow(kind: .accessibility)
                     }
                 }
+            }
+
+            if AppFeature.itemLinks.isAvailable {
+                Section {
+                    Toggle(itemLinkText.enable, isOn: $itemLinksEnabled)
+                        .onChange(of: itemLinksEnabled) { _, _ in
+                            ItemLinkService.shared.syncWithPreferences()
+                        }
+                    Text(itemLinkText.caption)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    ShortcutPreferenceRow(role: .itemLink,
+                                          isEnabled: itemLinksEnabled) {
+                        ItemLinkService.shared.syncWithPreferences()
+                    }
+                    if itemLinksEnabled, !permissions.accessibility {
+                        PermissionRow(kind: .accessibility)
+                    }
+                    if itemLinksEnabled, !permissions.fullDiskAccess {
+                        FullDiskAccessNote(reason: itemLinkText.caption)
+                    }
+                    if itemLinksEnabled {
+                        Label(itemLinkText.automationExplanation, systemImage: "gearshape.2")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                } header: {
+                    Text(itemLinkText.title)
+                }
+                .settingsSectionAnchor(.itemLinks)
             }
 
             if AppFeature.pastePlain.isAvailable {

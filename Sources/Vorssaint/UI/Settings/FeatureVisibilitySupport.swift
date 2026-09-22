@@ -37,6 +37,7 @@ enum SettingsSectionAnchor: String, CaseIterable, Hashable {
     case finderRename
     case clipboardHistory
     case pastePlain
+    case itemLinks
     case quickLauncher
     case quickToggles
     case screenshot
@@ -59,7 +60,7 @@ enum SettingsSectionAnchor: String, CaseIterable, Hashable {
             return .mouse
         case .switcher, .dock, .dockClick: return .switcher
         case .finderCutPaste, .finderRename: return .cutPaste
-        case .clipboardHistory, .pastePlain: return .clipboard
+        case .clipboardHistory, .pastePlain, .itemLinks: return .clipboard
         case .quickLauncher, .quickToggles, .micMute, .cameraPreview, .scratchpad, .cleaningMode:
             return .quickTools
         case .screenshot, .screenRecorder, .colorPicker, .screenOCR:
@@ -244,6 +245,8 @@ extension AppFeature {
             return FeatureSettingsDestination(.clipboard, sectionAnchor: .clipboardHistory)
         case .pastePlain:
             return FeatureSettingsDestination(.clipboard, sectionAnchor: .pastePlain)
+        case .itemLinks:
+            return FeatureSettingsDestination(.clipboard, sectionAnchor: .itemLinks)
         case .finderCutPaste:
             return FeatureSettingsDestination(.cutPaste, sectionAnchor: .finderCutPaste)
         case .finderRename:
@@ -327,7 +330,7 @@ enum FeatureVisibilitySupport {
         case .windowLayout: return [.windowLayout]
         case .autoQuit: return [.autoQuit]
         case .quitProtection: return [.quitWindowProtection]
-        case .clipboard: return [.clipboardHistory, .pastePlain, .finderCutPaste]
+        case .clipboard: return [.clipboardHistory, .pastePlain, .finderCutPaste, .itemLinks]
         case .cutPaste: return [.finderCutPaste, .finderRename]
         case .shelf: return [.shelf]
         case .media: return [.mediaTools]

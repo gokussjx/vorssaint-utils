@@ -181,6 +181,7 @@ struct GlobalShortcut: Equatable, Hashable {
     static let pastePlainDefault = GlobalShortcut(keyCode: Int64(kVK_ANSI_V),
                                                   modifiers: [.shift, .option, .command])
     static let finderRenameDefault = GlobalShortcut(keyCode: Int64(kVK_F2), modifiers: [])
+    static let itemLinkDefault = GlobalShortcut(keyCode: Int64(kVK_ANSI_C), modifiers: [.control])
     static let colorPickerDefault = GlobalShortcut(keyCode: Int64(kVK_ANSI_C),
                                                    modifiers: [.control, .option, .command])
     static let screenOCRDefault = GlobalShortcut(keyCode: Int64(kVK_ANSI_T),
@@ -693,6 +694,7 @@ enum GlobalShortcutRole: CaseIterable, Identifiable {
     case soundOutputSwitcher
     case pastePlain
     case finderRename
+    case itemLink
     case colorPicker
     case screenOCR
     case micMute
@@ -725,6 +727,7 @@ enum GlobalShortcutRole: CaseIterable, Identifiable {
         case .soundOutputSwitcher: return DefaultsKey.soundOutputSwitcherShortcut
         case .pastePlain: return DefaultsKey.pastePlainShortcut
         case .finderRename: return DefaultsKey.finderRenameShortcut
+        case .itemLink: return DefaultsKey.itemLinkShortcut
         case .colorPicker: return DefaultsKey.colorPickerShortcut
         case .screenOCR: return DefaultsKey.screenOCRShortcut
         case .micMute: return DefaultsKey.micMuteShortcut
@@ -757,6 +760,7 @@ enum GlobalShortcutRole: CaseIterable, Identifiable {
         case .soundOutputSwitcher: return .soundOutputSwitcherDefault
         case .pastePlain: return .pastePlainDefault
         case .finderRename: return .finderRenameDefault
+        case .itemLink: return .itemLinkDefault
         case .colorPicker: return .colorPickerDefault
         case .screenOCR: return .screenOCRDefault
         case .micMute: return .micMuteDefault
@@ -808,6 +812,7 @@ enum GlobalShortcutRole: CaseIterable, Identifiable {
         case .soundOutputSwitcher: return strings.soundOutputSwitcherTitle
         case .pastePlain: return strings.pastePlainName
         case .finderRename: return FeatureStrings.finderRename(L10n.shared.language).hubTitle
+        case .itemLink: return FeatureStrings.itemLinks(L10n.shared.language).shortcut
         case .colorPicker: return strings.colorPickerName
         case .screenOCR: return strings.ocrName
         case .micMute: return strings.micMuteName
@@ -866,6 +871,7 @@ enum GlobalShortcutRole: CaseIterable, Identifiable {
         case .soundOutputSwitcher: return [DefaultsKey.soundOutputSwitcherEnabled]
         case .pastePlain: return [DefaultsKey.pastePlainEnabled]
         case .finderRename: return [DefaultsKey.finderRenameEnabled]
+        case .itemLink: return [DefaultsKey.itemLinksEnabled]
         case .colorPicker: return [DefaultsKey.colorPickerShortcutEnabled]
         case .screenOCR: return [DefaultsKey.screenOCRShortcutEnabled]
         case .micMute: return [DefaultsKey.micMuteShortcutEnabled]
@@ -900,6 +906,7 @@ enum GlobalShortcutRole: CaseIterable, Identifiable {
         case .soundOutputSwitcher: return .soundOutputSwitcher
         case .pastePlain: return .pastePlain
         case .finderRename: return .finderRename
+        case .itemLink: return .itemLinks
         case .colorPicker: return .colorPicker
         case .screenOCR: return .screenOCR
         case .micMute: return .micMute

@@ -174,6 +174,8 @@ enum SettingsDirectory {
                                                                 .autoClearOnScreenLock,
                                                              FeatureStrings.clipboardIgnoredApps(language)
                                                                 .listTitle]),
+                                        (.itemLinks, [FeatureStrings.itemLinks(language).enable,
+                                                      FeatureStrings.itemLinks(language).shortcut]),
                                        ]),
                 SettingsDirectoryItem(page: .cutPaste,
                                        title: FeatureStrings.finderRename(language).pageTitle,

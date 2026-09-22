@@ -6,7 +6,7 @@ You can review or change every grant in System Settings, under Privacy and Secur
 
 | Permission | Optional | Powers |
 |---|---|---|
-| Accessibility | Yes | Scroll direction, Window Layout, the app and window switcher, Dock Preview, Dock click to minimize, middle click, paste as plain text, Finder cut and paste, quit on close, radial menu key actions, optional notch notification mirroring and keyboard feedback |
+| Accessibility | Yes | Scroll direction, Window Layout, the app and window switcher, Dock Preview, Dock click to minimize, middle click, paste as plain text, Finder cut and paste, Mail and Notes link shortcuts, quit on close, radial menu key actions, optional notch notification mirroring and keyboard feedback |
 | Screen Recording | Yes | Window previews, screenshots, copy text from screen and screen recordings |
 | System Audio Recording | Yes | Volume mixer, optional live equalizer and system audio capture for recordings |
 | Microphone | Yes | Your voice in a screen recording, only when you turn it on |
@@ -14,9 +14,9 @@ You can review or change every grant in System Settings, under Privacy and Secur
 | Calendars | Yes | Upcoming appointments in the notch |
 | Files and Folders | Yes | Monitoring downloads in a folder you choose |
 | Notifications | Yes | Keep awake, battery, Monitor and update alerts |
-| Full Disk Access | Yes | A deeper uninstaller scan |
+| Full Disk Access | Yes | A deeper uninstaller scan and resolving Apple Notes links |
 | Administrator (one time) | Yes | Password free closed lid toggling |
-| Automation | Yes | Finder actions, Homebrew Terminal handoff and supported music playback controls |
+| Automation | Yes | Finder actions, Mail and Notes link selection, Homebrew Terminal handoff and supported music playback controls |
 | App Management | Yes | App installs, updates and removal |
 
 ## Accessibility
@@ -34,6 +34,7 @@ You can review or change every grant in System Settings, under Privacy and Secur
 - **Middle click**, which turns a three finger press on the trackpad into a middle click.
 - **Paste as plain text**, which presses ⌘V for you after stripping the formatting.
 - **Finder cut and paste**, which steps in on ⌘X and ⌘V while Finder is in front.
+- **Mail and Notes links**, which catches the shortcut only while Mail or Notes is in front.
 - **Quit on close**, which spots when an app's last window goes away.
 - **Radial menu**, for wheel actions that press a key combo or a media key
   for you and for the optional side button trigger; opening apps, files and
@@ -109,11 +110,11 @@ Download monitoring watches only the folder you choose in the system picker. Fol
 
 ## Full Disk Access
 
-**Why it comes up.** The uninstaller hunts down the files an app leaves behind, like caches, preferences and logs. Some of those spots are protected by macOS and only open up with Full Disk Access.
+**Why it comes up.** The uninstaller hunts down protected files an app leaves behind. Apple Notes exposes its selected note as an internal database object, so resolving that object to the stable identifier used by a direct link also requires access to the local Notes database.
 
-**What uses it.** The uninstaller, for a deeper scan.
+**What uses it.** The uninstaller, for a deeper scan, and the Mail and Notes link shortcut when Apple Notes is in front. The link feature reads only the selected note’s stable identifier, never its title or contents.
 
-**If you say no.** The uninstaller still works and scans the places it can reach. It just might not surface files tucked away in protected folders.
+**If you say no.** The uninstaller still scans the places it can reach. Mail links still work, while Apple Notes links cannot be resolved.
 
 **Optional.** Yes. There is no pop up for Full Disk Access. You add Vorssaint in System Settings, under Privacy and Security, Full Disk Access, and Vorssaint opens that pane for you when the feature calls for it.
 
@@ -137,9 +138,10 @@ Download monitoring watches only the folder you choose in the system picker. Fol
 - **Uninstaller**, which moves leftover files to the Trash.
 - **Empty the Trash** in Quick toggles, which asks Finder to empty it. The other quick toggles, dark mode included, need no permission.
 - **Homebrew manager**, which can open Terminal with the exact Homebrew install or setup command when the app should not collect a password itself.
+- **Mail and Notes links**, which asks the frontmost app for the selected message IDs or note object IDs. It reads no message body, note body or attachment.
 - **Dynamic Island playback**, when a music app requires Automation to control its own playback while another app is active. Only playback commands declared by the selected app are used; an explicit button requests permission before a new action can be sent.
 
-**If you say no.** Those Finder or Terminal handoff steps will not go through. Music stays visible, and you can open its player to control it there. You can switch Automation back on in System Settings, under Privacy and Security, Automation.
+**If you say no.** The corresponding Finder, Mail, Notes or Terminal action will not go through. Music stays visible, and you can open its player to control it there. You can switch Automation back on in System Settings, under Privacy and Security, Automation.
 
 **Optional.** Yes.
 

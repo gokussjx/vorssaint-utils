@@ -588,8 +588,10 @@ struct PermissionsPortalSections: View {
             DispatchQueue.global(qos: .userInitiated).async {
                 let finder = Permissions.automationStatus(for: .finder)
                 let terminal = Permissions.automationStatus(for: .terminal)
+                let mail = Permissions.automationStatus(for: .mail)
+                let notes = Permissions.automationStatus(for: .notes)
                 DispatchQueue.main.async {
-                    automation = [.finder: finder, .terminal: terminal]
+                    automation = [.finder: finder, .terminal: terminal, .mail: mail, .notes: notes]
                 }
             }
         }
@@ -622,6 +624,11 @@ struct PermissionsPortalSections: View {
         case .automationFinder: return automationStatus(.finder)
         case .automationTerminal: return automationStatus(.terminal)
         case .automationPlayback: return .unknown
+        case .automationItemLinks:
+            let statuses = [automation[.mail], automation[.notes]]
+            if statuses.contains(.denied) || statuses.contains(.undetermined) { return .missing }
+            if statuses.allSatisfy({ $0 == .granted }) { return .granted }
+            return .unknown
         case .audioCapture:
             // No public check exists for system audio capture; the mixer
             // reports a failed tap, which is the one readable signal.
@@ -768,7 +775,8 @@ private struct PermissionPortalRow: View {
             || Permissions.shared.calendarAccess == .writeOnly
         case .camera: return Permissions.shared.camera == .undetermined
         case .microphone: return Permissions.shared.microphone == .undetermined
-        case .filesAndFolders, .automationFinder, .automationTerminal, .automationPlayback, .audioCapture,
+        case .filesAndFolders, .automationFinder, .automationTerminal, .automationPlayback,
+             .automationItemLinks, .audioCapture,
              .appManagement: return false
         }
     }
@@ -786,7 +794,8 @@ private struct PermissionPortalRow: View {
         case .calendar: Permissions.shared.requestCalendar()
         case .camera: Permissions.shared.requestCamera()
         case .microphone: Permissions.shared.requestMicrophone()
-        case .filesAndFolders, .automationFinder, .automationTerminal, .automationPlayback, .audioCapture,
+        case .filesAndFolders, .automationFinder, .automationTerminal, .automationPlayback,
+             .automationItemLinks, .audioCapture,
              .appManagement:
             break
         }
@@ -799,7 +808,8 @@ private struct PermissionPortalRow: View {
         case .fullDiskAccess: Permissions.shared.openFullDiskAccessSettings()
         case .filesAndFolders: Permissions.shared.openFilesAndFoldersSettings()
         case .notifications: Permissions.shared.openNotificationSettings()
-        case .automationFinder, .automationTerminal, .automationPlayback: Permissions.shared.openAutomationSettings()
+        case .automationFinder, .automationTerminal, .automationPlayback, .automationItemLinks:
+            Permissions.shared.openAutomationSettings()
         case .audioCapture: Permissions.shared.openAudioCaptureSettings()
         case .microphone: Permissions.shared.openMicrophoneSettings()
         case .calendar: Permissions.shared.openCalendarSettings()
@@ -840,6 +850,7 @@ extension AppFeature {
         case .pastePlain: return s.pastePlainName
         case .finderCutPaste: return s.cutPasteName
         case .finderRename: return FeatureStrings.finderRename(L10n.shared.language).hubTitle
+        case .itemLinks: return FeatureStrings.itemLinks(L10n.shared.language).title
         case .shelf: return s.shelfName
         case .urlCleaner: return s.urlCleanerName
         case .diskImageInstaller:
@@ -916,6 +927,7 @@ extension AppFeature {
         case .pastePlain: return hub.descPastePlain
         case .finderCutPaste: return hub.descFinderCutPaste
         case .finderRename: return FeatureStrings.finderRename(L10n.shared.language).hubDescription
+        case .itemLinks: return FeatureStrings.itemLinks(L10n.shared.language).description
         case .shelf: return hub.descShelf
         case .urlCleaner: return hub.descURLCleaner
         case .diskImageInstaller:
@@ -984,6 +996,7 @@ extension AppPermission {
         case .automationFinder: return hub.permAutomationFinder
         case .automationTerminal: return hub.permAutomationTerminal
         case .automationPlayback: return FeatureStrings.notchMusicExtras(L10n.shared.language).automationPermission
+        case .automationItemLinks: return FeatureStrings.itemLinks(L10n.shared.language).automationPermission
         case .audioCapture: return hub.permAudioCapture
         case .microphone: return FeatureStrings.recorder(L10n.shared.language).microphonePermissionName
         case .calendar: return FeatureStrings.notchCalendar(L10n.shared.language).title
@@ -1002,6 +1015,7 @@ extension AppPermission {
         case .automationFinder: return hub.explainAutomationFinder
         case .automationTerminal: return hub.explainAutomationTerminal
         case .automationPlayback: return FeatureStrings.notchMusicExtras(L10n.shared.language).automationExplanation
+        case .automationItemLinks: return FeatureStrings.itemLinks(L10n.shared.language).automationExplanation
         case .audioCapture: return hub.explainAudioCapture
         case .microphone:
             return FeatureStrings.recorder(L10n.shared.language).microphonePermissionExplain
